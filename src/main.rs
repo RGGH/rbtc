@@ -6,17 +6,17 @@ use serde_json::Value;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
-    let btc = client
+    let response = client
         .get("https://api.coinstats.app/public/v1/coins/bitcoin")
         .header("Accept", "text/plain")
-        .timeout(Duration::from_secs(3))
+        .timeout(Duration::from_secs(2))
         .send()
         .await?
         .text()
         .await?;
 
     // convert response to json
-    let json: Value = serde_json::from_str(&btc).unwrap_or_else(|e| {
+    let json: Value = serde_json::from_str(&response).unwrap_or_else(|e| {
             panic!("Failed to parse json; error is {}", e);
         });
     
